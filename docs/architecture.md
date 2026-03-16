@@ -8,6 +8,8 @@ The Time-Bound Access Token Service is a backend service that issues temporary a
 
 Requests flow through five layers, each separated by a clear boundary.
 
+![architecture diagram](access_token_service_architecture.svg)
+
 ### Security filter boundary
 
 Every incoming HTTP request passes through the JWT authentication filter before reaching any controller. The filter extracts the token from the `Authorization` header, validates the signature and expiration, and populates Spring's `SecurityContext` with the authenticated user's identity. If the token is missing or invalid, the request is rejected with a 401 before any business logic executes.
@@ -58,11 +60,11 @@ A Spring `@Scheduled` task periodically calls `GrantService.revokeExpiredGrants(
 
 ## Tech Stack
 
-- Java 17 or 21
+- Java 21
 - Spring Boot
 - Spring Security
 - Spring Data JPA (Hibernate)
 - PostgreSQL
 - Docker (local database)
 - Flyway (database migrations)
-- Maven or Gradle
+- Maven
