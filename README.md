@@ -37,7 +37,7 @@ See [docs/api-contracts.md](docs/api-contracts.md) for contract definitions.
 
 ## Domain Model (3 Entities)
 
-User, Role, and AccessGrant are the primary entities. See [docs/entity-relationships.md](docs/entity-relationships.md).
+User and AccessGrant are the primary entities. See [docs/entity-relationships.md](docs/entity-relationships.md).
 
 ## Tech Stack
 
