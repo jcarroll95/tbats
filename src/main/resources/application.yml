@@ -11,3 +11,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
+  jwt:
+    secret: a-strong-secret-key-at-least-32-characters-long
+    expiration-ms: 3600000
