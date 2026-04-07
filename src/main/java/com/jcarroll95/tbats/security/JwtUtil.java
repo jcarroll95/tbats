@@ -33,7 +33,7 @@ public class JwtUtil {
                 .compact();
 
     }
-
+/*
 
     // Extract username from token - this is the subject claim
     public String extractUsername(String token) {
@@ -92,6 +92,5 @@ public class JwtUtil {
         // For production, use a properly generated key
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
-
-    // method to validate a token
+*/
 }
