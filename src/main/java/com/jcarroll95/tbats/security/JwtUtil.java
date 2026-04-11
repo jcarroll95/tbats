@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Date;
@@ -27,6 +28,12 @@ public class JwtUtil {
     @PostConstruct
     public void init() {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    @Autowired
+    public JwtUtil() {
+        // Tell Spring to use the no-arg constructor for dependency injection
+        // instead of my unit test constructor
     }
 
     // Unit test constructor
