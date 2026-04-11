@@ -2,7 +2,7 @@
 -- Seeds two test users for development and integration testing.
 -- Passwords: admin123 / user123 (DEV ONLY — not for any environment besides local).
 
-INSERT INTO users (id, username, passwordHash, role, createdAt)
+INSERT INTO users (id, username, password_hash, role, created_at)
 VALUES (
            '00000000-0000-0000-0000-000000000001',
            'admin',
@@ -11,7 +11,7 @@ VALUES (
            NOW()
        );
 
-INSERT INTO users (id, username, passwordHash, role, createdAt)
+INSERT INTO users (id, username, password_hash, role, created_at)
 VALUES (
            '00000000-0000-0000-0000-000000000002',
            'testuser',

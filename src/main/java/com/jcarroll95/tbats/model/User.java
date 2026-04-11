@@ -17,14 +17,14 @@ public class User {
     @Column(unique = true, nullable = false, length = 50)
     private String username;
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Role role;
 
-    @Column(nullable = false, length = 50)
+    @Column(name = "created_at", nullable = false, length = 50)
     private String createdAt;
 
     public User() {
