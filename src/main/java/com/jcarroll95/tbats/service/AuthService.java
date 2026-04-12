@@ -32,6 +32,7 @@ public class AuthService {
 
         // exception notes: yes we'll return the same message for obfuscation,
         // worth looking at timing attacks for the next iteration to harden further
+        // ie check a fake password if the username is bad so you don't return early
 
         return jwtUtil.generateToken(user.getUsername(), user.getRole().name());
     }
