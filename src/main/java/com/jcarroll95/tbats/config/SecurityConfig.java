@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health", "/auth/**").permitAll()
+                        .requestMatchers("/health", "/auth/**", "/index.html", "/").permitAll()
                         .anyRequest().authenticated())
                 // insert my jwt filter before the default login filter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

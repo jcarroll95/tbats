@@ -11,5 +11,19 @@ services:
     volumes:
       - tbats-data:/var/lib/postgresql/data
 
+  app:
+    build:
+      context: .
+    container_name: tbats-app
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+    ports:
+      - "8080:8080"
+
 volumes:
   tbats-data:

@@ -75,11 +75,13 @@ User and AccessGrant are the primary entities. See [docs/entity-relationships.md
 
 ### Setup
 
-Copy `.env.example` to `.env` and fill in values:
+Copy `example.env` to `.env` and fill in values:
 
 ```bash
-cp .env.example .env
+cp example.env .env
 ```
+
+#### Option A: Run app on host machine, Postgres in Docker
 
 Start PostgreSQL:
 
@@ -96,6 +98,50 @@ set -a && source .env && set +a
 ```
 
 The service listens on `http://localhost:8080`.
+
+#### Option B: Run app + Postgres both in Docker (recommended for parity)
+
+Use Docker Compose to run both services:
+
+```bash
+docker compose up --build
+```
+
+The app container uses `DB_HOST=postgres` and `DB_PORT=5432` internally so it can
+reach the Postgres service over the Docker network.
+
+#### Option C: Run app image with `docker run` against compose Postgres
+
+If Postgres is started by compose and the app is started separately with `docker run`,
+you must attach the app container to the same compose network and use the Postgres
+service name on the container port:
+
+```bash
+docker compose up -d postgres
+docker run --rm -p 8080:8080 --env-file .env \
+  --network tbats_default \
+  -e DB_HOST=postgres \
+  -e DB_PORT=5432 \
+  tbats
+```
+
+Why: inside a container, `localhost` points to that same container, not to your Mac
+and not to the Postgres container.
+
+#### Deploying container to AWS (or other cloud)
+
+Keep image the same and provide env vars at deploy time:
+
+- `JWT_SECRET`
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `DB_HOST` (for example an RDS endpoint)
+- `DB_PORT` (usually `5432`)
+- `SPRING_PROFILES_ACTIVE` (typically `prod`, optional)
+
+> Note: `SPRING_DATASOURCE_USER` is not a Spring Boot datasource property.
+> Use `POSTGRES_USER` (as this project does) or `SPRING_DATASOURCE_USERNAME`.
 
 ### Example requests
 
