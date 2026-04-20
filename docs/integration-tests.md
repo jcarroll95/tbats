@@ -1,35 +1,39 @@
 # Integration Tests
 
-This project has two integration tests written in `src/test/java/com/jcarroll95/tbats/`:
+This project has two integration tests in `src/test/java/com/jcarroll95/tbats/`:
 
-- `GrantLifecycleIntegrationTest` — login, create grant, list active, revoke, 
-   verify removed.  
-- `GrantExpirationIntegrationTest` — verifies the scheduled `GrantExpirationJob` 
-   flips expired grants to revoked.  
+- `GrantLifecycleIntegrationTest` — login, create grant, list active, revoke,
+  verify removed.
+- `GrantExpirationIntegrationTest` — verifies the scheduled `GrantExpirationJob`
+  flips expired grants to revoked.
 
 Both use `@SpringBootTest(webEnvironment = RANDOM_PORT)` and exercise the full
 HTTP → security filter → controller → service → JPA → Postgres path.
 
-## Runtime status: disabled
+## How they work
 
-Tests are currently `@Disabled` due to runtime environment incompatibilities
-encountered with multiple test database approaches:
+Tests extend `IntegrationTestBase`, which:
 
-**Testcontainers attempt.** Initial design used Testcontainers PostgreSQL for
-real-Postgres fidelity. Docker Desktop on Apple Silicon returned a stub socket
-to Testcontainers' Java client, producing repeated `BadRequestException: Status 400`
-failures. Switching to Colima resolved socket discovery but exposed a docker-java
-client API version mismatch (Testcontainers 1.20.x bundles a client that
-negotiates Docker API 1.32, but modern daemons require 1.44+). Upgrading
-Testcontainers to 2.x resolved the mismatch but introduced a JUnit 4/5
-compatibility regression with IntelliJ.
+1. Starts a **Testcontainers** PostgreSQL 16 container (shared across all test classes via a static initializer)
+2. Uses Spring Boot's `@ServiceConnection` to auto-configure the datasource
+3. Runs Flyway migrations against the container on startup
+4. Provides a `restClient()` helper for HTTP tests
 
-**Zonky embedded Postgres attempt.** Switching from Testcontainers to Zonky
-embedded-database-spring-test removed the Docker dependency, but Zonky's
-autoconfiguration interaction with Spring Boot 4's Flyway autoconfiguration
-produced bean wiring failures even with the documented setup.
+No Docker socket mounts are needed — Ryuk (the cleanup container) is disabled
+via the Maven Surefire plugin config because Colima's socket path can't be
+mounted inside containers. Test containers are cleaned up by the JVM shutdown
+hook instead.
 
-**Resolution.** Integration tests are disabled for now.
-Re-enabling will follow the next Spring Boot patch release, ecosystem catch-up
-from Testcontainers/Zonky, or my follow-on project's more robust infrastructure
-build-out. 
+## Running
+
+```bash
+./mvnw test
+```
+
+Requires Docker (via Docker Desktop or Colima) running locally.
+
+## Key dependencies
+
+- `org.testcontainers:testcontainers-postgresql:2.0.4`
+- `org.testcontainers:testcontainers-junit-jupiter:2.0.4`
+- `org.springframework.boot:spring-boot-testcontainers`
