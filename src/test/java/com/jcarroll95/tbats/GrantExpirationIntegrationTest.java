@@ -7,7 +7,6 @@ import com.jcarroll95.tbats.repository.AccessGrantRepository;
 import com.jcarroll95.tbats.repository.UserRepository;
 import com.jcarroll95.tbats.scheduler.GrantExpirationJob;
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +17,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled("See docs/integration-tests.md — runtime ecosystem incompatibility")
 class GrantExpirationIntegrationTest extends IntegrationTestBase {
 
     @Autowired UserRepository userRepository;
@@ -30,8 +28,8 @@ class GrantExpirationIntegrationTest extends IntegrationTestBase {
     @Test
     @Transactional
     void expirationJobRevokesPastDueGrants() {
-        userRepository.deleteAll();
         grantRepository.deleteAll();
+        userRepository.deleteAll();
 
         User alice = new User("alice", passwordEncoder.encode("pw"), Role.USER);
         userRepository.save(alice);

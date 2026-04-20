@@ -42,6 +42,9 @@ public class User {
         if (id == null) {
             id = UUID.randomUUID();
         }
+        if (createdAt == null) {
+            createdAt = java.time.OffsetDateTime.now().toString();
+        }
     }
 
     public UUID getId() {

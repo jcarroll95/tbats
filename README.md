@@ -191,9 +191,8 @@ dependency tree.
 
 ## Testing
 
-- Unit tests for security utilities and core logic — runnable with `./mvnw test`
-- Integration tests authored for full lifecycle and expiration paths
-  (currently `@Disabled` — see `docs/integration-tests.md`)
+- Unit tests for security utilities and core logic, runnable with `./mvnw test`
+- Integration tests authored for full lifecycle and expiration paths, see `docs/integration-tests.md`)
 
 ## Bridge to PAM
 
