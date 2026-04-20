@@ -143,7 +143,7 @@ you must attach the app container to the same compose network and use the Postgr
 service name on the container port:
 
 ```bash
-docker compose up -d postgres
+docker compose up -d postgres 
 docker run --rm -p 8080:8080 --env-file .env \
   --network tbats_default \
   -e DB_HOST=postgres \
